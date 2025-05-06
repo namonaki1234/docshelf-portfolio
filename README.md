@@ -1,54 +1,88 @@
-# React + TypeScript + Vite
+# 📚 DocShelf - Web開発者向けリファレンス&Tips管理アプリ
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+DocShelf は、React・Tailwind CSS・Supabase などの Web 開発に関する知識や Tips を
+「カテゴリごとに整理・管理・投稿」できる学習支援アプリです。
 
-Currently, two official plugins are available:
+本アプリは、面接時の技術アピール用ポートフォリオとして制作しました。
+また、開発の動機としては、現在使用している Notion よりも高速に動作し、
+自分好みにUI/UXをカスタマイズできるツールが欲しかったことが背景にあります。
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 🧩 特徴
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- 📌 **カテゴリ別Tips管理**：React、Supabase、Tailwind CSS などのカテゴリに分類して Tips を一覧・投稿・編集・削除できます。
+- ✅ **Supabase認証**：メールアドレス＋パスワードでログインし、自分だけの Tips を管理。
+- ✨ **モダンUI**：Tailwind CSS + ShadCN UI によるシンプルで見やすいデザイン。
+- 🔄 **リアルタイムデータ連携**：Supabaseのデータベースと双方向通信。
+- 🧠 **RLS対応設計**：自分の投稿のみ編集・削除が可能。
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+---
+
+## 🔐 テスト用ログイン情報（面接官向け）
+
+- メールアドレス: `test@example.com`  
+- パスワード: `testtest`
+※ 認証が必要な機能を確認する際にご利用ください。
+
+---
+
+## 🛠 使用技術スタック
+
+| 項目            | 使用技術                          |
+|-----------------|-----------------------------------|
+| フロントエンド   | React, TypeScript, Vite           |
+| UI ライブラリ   | Tailwind CSS, ShadCN UI           |
+| 認証・DB        | Supabase (Auth + Postgres)        |
+| 状態管理        | useState / useEffect（簡易構成）  |
+| ルーティング     | React Router DOM                  |
+| デプロイ        | Vercel                            |
+
+---
+
+## 📂 ディレクトリ構成（簡略）
+<!-- <details> -->
+<!-- <summary>展開して表示</summary> -->
+
+```plaintext
+
+src/
+├── api/         # Supabaseとのやり取り（fetch系関数など）
+├── assets/      # ロゴや画像などの静的アセット
+├── components/  # UIコンポーネント（NavCard, LogoutButtonなど）
+│   └── ui/      # ShadCN UIなどの再利用可能なUI部品
+├── lib/         # supabaseClientなどのライブラリ設定
+├── pages/       # 各ページコンポーネント（Home, Tips, Post, Category別など）
+│   └── category/  # カテゴリごとの動的ルーティングページ
+└── types/       # TypeScriptによる型定義（例：Tip型）
+
 ```
+## 機能一覧
+- カテゴリ一覧を Supabase から動的取得して表示
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- Tipsの投稿・編集・削除（認証済みユーザーのみ）
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- Supabase Auth によるログイン・ログアウト機能
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+- /category/[href] によるカテゴリ別ルーティング・表示
+
+- RLS対応：自分以外のユーザーのデータ操作不可
+
+## 今後の追加予定機能
+- 検索機能（タイトル・キーワードからの絞り込み）
+
+- 投稿されたTipsの可視化（棒グラフ・円グラフなど）
+
+- 投稿内容のMarkdownサポート
+
+- コメント機能（Tipsへの補足・議論）
+
+## 補足事項
+-.env ファイルの漏洩対策として .gitignore に登録済み
+
+-認証付き投稿管理（RLS）により他ユーザーのデータ編集・削除は不可
+
+
+
+
+
