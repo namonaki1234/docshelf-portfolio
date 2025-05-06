@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { supabase } from '@/lib/supabaseClient';
 import { NavCard } from '@/components/NavCard';
 import { LogoutButton } from '@/components/LogoutButton';
+import type { User } from '@supabase/supabase-js';
 
 type Category = {
   id: string;
@@ -13,8 +14,15 @@ type Category = {
 
 export const Home = () => {
   const [categories, setCategories] = useState<Category[]>([]);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
+    const fetchUser = async () => {
+      const { data } = await supabase.auth.getUser();
+      setUser(data.user);
+    };
+    fetchUser();
+
     const fetchCategories = async () => {
       const { data, error } = await supabase.from('categories').select('*');
       if (error) {
@@ -29,10 +37,17 @@ export const Home = () => {
 
   return (
     <main className="p-6 space-y-6 max-w-3xl mx-auto">
-      <div className='mb-4 flex justify-between items-center'>
-        <h1 className="text-3xl font-bold text-slate-800 dark:text-white">
-          📚 DocShelf
-        </h1>
+      <div className="mb-4 flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-slate-800 dark:text-white">
+            📚 DocShelf
+          </h1>
+          {user && (
+            <p className="text-sm text-slate-500 mt-1">
+              ログイン中: {user.email}
+            </p>
+          )}
+        </div>
 
         <LogoutButton />
       </div>
