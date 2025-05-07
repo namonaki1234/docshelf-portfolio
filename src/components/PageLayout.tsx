@@ -19,12 +19,12 @@ export const PageLayout = ({
             ← ホームに戻る
           </button>
         </Link>
-        <h1 className="text-3xl font-bold text-slate-800 dark:text-white">
+        <h1 className="text-3xl font-bold text-slate-800 ">
           {title}
         </h1>
       </div>
       {description && (
-        <p className="text-slate-600 dark:text-slate-300">{description}</p>
+        <p className="text-slate-600">{description}</p>
       )}
       <div>{children}</div>
     </main>

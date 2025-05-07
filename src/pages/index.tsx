@@ -39,7 +39,7 @@ export const Home = () => {
     <main className="p-6 space-y-6 max-w-3xl mx-auto">
       <div className="mb-4 flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-slate-800 dark:text-white">
+          <h1 className="text-3xl font-bold text-slate-800">
             📚 DocShelf
           </h1>
           {user && (
@@ -48,7 +48,6 @@ export const Home = () => {
             </p>
           )}
         </div>
-
         <LogoutButton />
       </div>
 
@@ -65,7 +64,7 @@ export const Home = () => {
         </Link>
       </div>
 
-      <p className="text-slate-600 dark:text-slate-300">
+      <p className="text-slate-600">
         Web開発の知識をまとめて確認できるリファレンスアプリ
       </p>
 
