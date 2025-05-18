@@ -1,6 +1,6 @@
 # 📚 DocShelf - Web開発者向けリファレンス&Tips管理アプリ
 
-DocShelf は、React・Tailwind CSS・Supabase などの Web 開発に関する知識や Tips を
+DocShelf は、React・tailwindcss・Supabase などの Web 開発に関する知識や Tips を
 「カテゴリごとに整理・管理・投稿」できる学習支援アプリです。
 
 本アプリは、面接時の技術アピール用ポートフォリオとして制作しました。
@@ -16,9 +16,9 @@ DocShelf は、React・Tailwind CSS・Supabase などの Web 開発に関する�
 
 ## 🧩 特徴
 
-- 📌 **カテゴリ別Tips管理**：React、Supabase、Tailwind CSS などのカテゴリに分類して Tips を一覧・投稿・編集・削除できます。
+- 📌 **カテゴリ別Tips管理**：React、Supabase、tailwindcss などのカテゴリに分類して Tips を一覧・投稿・編集・削除できます。
 - ✅ **Supabase認証**：メールアドレス＋パスワードでログインし、自分だけの Tips を管理。
-- ✨ **モダンUI**：Tailwind CSS + ShadCN UI によるシンプルで見やすいデザイン。
+- ✨ **モダンUI**：tailwindcss + shadcn/ui によるシンプルで見やすいデザイン。
 - 🔄 **リアルタイムデータ連携**：Supabaseのデータベースと双方向通信。
 - 🧠 **RLS対応設計**：自分の投稿のみ編集・削除が可能。
 
@@ -38,7 +38,7 @@ DocShelf は、React・Tailwind CSS・Supabase などの Web 開発に関する�
 | 項目            | 使用技術                          |
 |-----------------|-----------------------------------|
 | フロントエンド   | React, TypeScript, Vite           |
-| UI ライブラリ   | Tailwind CSS, ShadCN UI           |
+| UI ライブラリ   | tailwindcss, shadcn/ui           |
 | 認証・DB        | Supabase (Auth + Postgres)        |
 | 状態管理        | useState / useEffect（簡易構成）  |
 | ルーティング     | React Router DOM                  |
@@ -56,7 +56,7 @@ src/
 ├── api/         # Supabaseとのやり取り（fetch系関数など）
 ├── assets/      # ロゴや画像などの静的アセット
 ├── components/  # UIコンポーネント（NavCard, LogoutButtonなど）
-│   └── ui/      # ShadCN UIなどの再利用可能なUI部品
+│   └── ui/      # shadcn/uiなどの再利用可能なUI部品
 ├── lib/         # supabaseClientなどのライブラリ設定
 ├── pages/       # 各ページコンポーネント（Home, Tips, Post, Category別など）
 │   └── category/  # カテゴリごとの動的ルーティングページ
