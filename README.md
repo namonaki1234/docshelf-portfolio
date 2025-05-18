@@ -7,7 +7,7 @@ DocShelf は、React・tailwindcss・Supabase などの Web 開発に関する�
 また、開発の動機としては、現在使用している Notion よりも高速に動作し、
 自分好みにUI/UXをカスタマイズできるツールが欲しかったことが背景にあります。
 
-※ デプロイ先の実物を見たい方は以下のリンクをクリックしてください。
+※ デプロイ先のリンクは以下になっています。
 ## [docshelf-portfolio](https://docshelf-portfolio-8a65jq9nq-namonakis-projects.vercel.app)
 
 
