@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button"
+
 type Props = {
     keyword: string
     setKeyword: (val: string) => void
@@ -34,7 +36,7 @@ type Props = {
           <option value="asc">古い順</option>
         </select>
   
-        <button onClick={() => setViewMode("card")} className="bg-slate-800 text-white rounded px-3 py-1">カード</button>
+        <Button onClick={() => setViewMode("card")} className="bg-slate-800 text-white rounded px-3 py-1">カード</Button>
         <button onClick={() => setViewMode("table")} className="bg-slate-800 text-white rounded px-3 py-1">表</button>
       </div>
     )

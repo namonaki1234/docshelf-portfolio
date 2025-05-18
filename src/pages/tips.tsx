@@ -11,7 +11,7 @@ export const TipsPage = () => {
   const [keyword, setKeyword] = useState('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [viewMode, setViewMode] = useState<'card' | 'table'>('card');
-  const [editingTip, setEditingTip] = useState<Tip | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -44,6 +44,7 @@ export const TipsPage = () => {
         if (!data || data.length === 0) {
           console.info('ℹ️ 該当するTipsがありません');
         }
+        // ステートに取得したデータをセット
         setTips(data);
       } catch (err) {
         console.error('🔥 予期せぬエラー:', err);
@@ -82,75 +83,36 @@ export const TipsPage = () => {
       {viewMode === 'card' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {tips.map((tip) => (
-            <TipCard
-              key={tip.id}
-              tip={tip}
-              onEdit={setEditingTip}
-              onDelete={handleDelete}
-            />
+           <TipCard
+                         key={tip.id}
+                         tip={tip}
+                         isEditing={editingId === tip.id}
+                         onEdit={() => setEditingId(tip.id)}
+                         onCancel={() => setEditingId(null)}
+                         onDelete={handleDelete}
+                         onUpdate={async (title, content) => {
+                           const { error } = await supabase
+                             .from('tips')
+                             .update({ title, content })
+                             .eq('id', tip.id)
+                             .eq('user_id', userId);
+                           if (!error) {
+                             setTips((prevTips) =>
+                               prevTips.map((t) =>
+                                 t.id === tip.id ? { ...t, title, content } : t
+                               )
+                             );
+                             setEditingId(null);
+                           }
+                         }}
+                       />
           ))}
         </div>
       ) : (
         <TipTable tips={tips} />
       )}
 
-      {/* 編集モードならフォームを表示 */}
-      {editingTip && (
-        <div className="border p-4 mb-4 bg-white rounded shadow">
-          <h2 className="text-lg font-bold mb-2">編集中: {editingTip.title}</h2>
-          <input
-            type="text"
-            value={editingTip.title}
-            onChange={(e) =>
-              setEditingTip({ ...editingTip, title: e.target.value })
-            }
-            className="w-full border px-3 py-1 mb-2"
-          />
-          <textarea
-            value={editingTip.content}
-            onChange={(e) =>
-              setEditingTip({ ...editingTip, content: e.target.value })
-            }
-            className="w-full border px-3 py-2 mb-2"
-          />
-          <button
-            onClick={async () => {
-              const { error } = await supabase
-                .from('tips')
-                .update({
-                  title: editingTip.title,
-                  content: editingTip.content,
-                })
-                .eq('id', editingTip.id)
-                .eq('user_id', userId);
-              if (!error) {
-                // ステートのtipsを更新
-                setTips((prevTips) =>
-                  prevTips.map((tip) =>
-                    tip.id === editingTip.id
-                      ? {
-                          ...tip,
-                          title: editingTip.title,
-                          content: editingTip.content,
-                        }
-                      : tip
-                  )
-                );
-                setEditingTip(null); // フォームを閉じる
-              }
-            }}
-            className="bg-blue-600 text-white px-4 py-2 rounded"
-          >
-            更新
-          </button>
-          <button
-            onClick={() => setEditingTip(null)}
-            className="ml-2 text-gray-500"
-          >
-            キャンセル
-          </button>
-        </div>
-      )}
+      
     </PageLayout>
   );
 };

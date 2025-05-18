@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 
 type PageLayoutProps = {
   title: string;
@@ -13,19 +14,15 @@ export const PageLayout = ({
 }: PageLayoutProps) => {
   return (
     <main className="p-6 space-y-6 max-w-3xl mx-auto">
-      <div className="mb-4 flex flex-col gap-4">  
+      <div className="mb-4 flex flex-col gap-4">
         <Link to="/">
-          <button className="mt-4 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-400 transition">
+          <Button variant="grayBack" className="mt-4">
             ← ホームに戻る
-          </button>
+          </Button>
         </Link>
-        <h1 className="text-3xl font-bold text-slate-800 ">
-          {title}
-        </h1>
+        <h1 className="text-3xl font-bold text-slate-800 ">{title}</h1>
       </div>
-      {description && (
-        <p className="text-slate-600">{description}</p>
-      )}
+      {description && <p className="text-slate-600">{description}</p>}
       <div>{children}</div>
     </main>
   );

@@ -1,5 +1,6 @@
 import { supabase } from "@/lib/supabaseClient"
 import { useNavigate } from "react-router-dom"
+import { Button } from "@/components/ui/button";
 
 export const LogoutButton = () => {
   const navigate = useNavigate()
@@ -10,11 +11,8 @@ export const LogoutButton = () => {
   }
 
   return (
-    <button
-      onClick={handleLogout}
-      className="px-4 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-    >
+      <Button variant="destructive" onClick={handleLogout}>
       ログアウト
-    </button>
+    </Button>
   )
 }
