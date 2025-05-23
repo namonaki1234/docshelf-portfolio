@@ -5,6 +5,7 @@ import type { Tip } from '@/types/tip';
 import { TipCard } from '@/components/TipCard';
 import { TipTable } from '@/components/TipTable';
 import { TipFilterBar } from '@/components/TipFilterBar';
+import type { Category } from '@/types/category';
 
 export const TipsPage = () => {
   const [tips, setTips] = useState<Tip[]>([]);
@@ -13,8 +14,18 @@ export const TipsPage = () => {
   const [viewMode, setViewMode] = useState<'card' | 'table'>('card');
   const [editingId, setEditingId] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
+    const fetchCategories = async () => {
+      const { data, error } = await supabase.from('categories').select('*');
+      if (!error && data) {
+        setCategories(data);
+      } else {
+        console.error('カテゴリ取得に失敗:', error?.message);
+      }
+    };
+
     const fetchTips = async () => {
       try {
         const { data: userData, error: userError } =
@@ -51,6 +62,7 @@ export const TipsPage = () => {
       }
     };
 
+    fetchCategories();
     fetchTips();
   }, [keyword, sortOrder]);
 
@@ -83,36 +95,37 @@ export const TipsPage = () => {
       {viewMode === 'card' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {tips.map((tip) => (
-           <TipCard
-                         key={tip.id}
-                         tip={tip}
-                         isEditing={editingId === tip.id}
-                         onEdit={() => setEditingId(tip.id)}
-                         onCancel={() => setEditingId(null)}
-                         onDelete={handleDelete}
-                         onUpdate={async (title, content) => {
-                           const { error } = await supabase
-                             .from('tips')
-                             .update({ title, content })
-                             .eq('id', tip.id)
-                             .eq('user_id', userId);
-                           if (!error) {
-                             setTips((prevTips) =>
-                               prevTips.map((t) =>
-                                 t.id === tip.id ? { ...t, title, content } : t
-                               )
-                             );
-                             setEditingId(null);
-                           }
-                         }}
-                       />
+            <TipCard
+              key={tip.id}
+              tip={tip}
+              isEditing={editingId === tip.id}
+              onEdit={() => setEditingId(tip.id)}
+              categories={categories}
+              onCancel={() => setEditingId(null)}
+              onDelete={handleDelete}
+              onUpdate={async (title, content, categoryId) => {
+                const { error } = await supabase
+                  .from('tips')
+                  .update({ title, content, category_id: categoryId })
+                  .eq('id', tip.id)
+                  .eq('user_id', userId);
+                if (!error) {
+                  setTips((prevTips) =>
+                    prevTips.map((t) =>
+                      t.id === tip.id
+                        ? { ...t, title, content, category_id: categoryId }
+                        : t
+                    )
+                  );
+                  setEditingId(null);
+                }
+              }}
+            />
           ))}
         </div>
       ) : (
         <TipTable tips={tips} />
       )}
-
-      
     </PageLayout>
   );
 };

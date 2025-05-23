@@ -42,6 +42,7 @@ export const Home = () => {
           <h1 className="text-3xl font-bold text-slate-800">
             📚 DocShelf
           </h1>
+          <h2 className='text-sm text-slate-600'>Web開発の知識をまとめて確認できるリファレンスアプリ</h2>
           {user && (
             <p className="text-sm text-slate-500 mt-1">
               ログイン中: {user.email}
@@ -54,7 +55,7 @@ export const Home = () => {
       <div className="flex flex-col md:flex-row gap-2">
         <Link to="/tips">
           <button className="px-4 py-2 bg-slate-800 text-white rounded hover:bg-slate-700 transition">
-            📝 自分のTips一覧を見る
+            📝 自分のTips一覧を見る（編集、削除はここから）
           </button>
         </Link>
         <Link to="/post">
@@ -65,7 +66,6 @@ export const Home = () => {
       </div>
 
       <p className="text-slate-600">
-        Web開発の知識をまとめて確認できるリファレンスアプリ
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

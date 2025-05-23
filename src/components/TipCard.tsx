@@ -1,4 +1,5 @@
 import type { Tip } from '@/types/tip';
+import type { Category } from '@/types/category';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 
@@ -9,21 +10,36 @@ export const TipCard = ({
   onDelete,
   onUpdate,
   onCancel,
+  categories,
 }: {
   tip: Tip;
   isEditing: boolean;
   onEdit: () => void;
   onDelete: (id: string) => void;
-  onUpdate: (title: string, content: string) => void;
+  onUpdate: (title: string, content: string, categoryId: string) => void;
   onCancel: () => void;
+  categories: Category[];
 }) => {
   const [title, setTitle] = useState(tip.title);
   const [content, setContent] = useState(tip.content);
+  const [categoryId, setCategoryId] = useState(tip.category_id);
 
   return (
     <div className="border rounded p-4 bg-white shadow relative">
       {isEditing ? (
         <>
+          <select
+            className="w-full border px-2 py-1 mb-2 text-slate-800"
+            value={categoryId}
+            onChange={(e) => setCategoryId(e.target.value)}
+          >
+            <option value="">カテゴリを選択</option>
+            {categories.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
           <input
             className="w-full border px-2 py-1 mb-2 text-slate-800"
             value={title}
@@ -37,7 +53,7 @@ export const TipCard = ({
           />
           <div className="flex justify-end gap-2">
             <Button
-              onClick={() => onUpdate(title, content)}
+              onClick={() => onUpdate(title, content, categoryId)}
               className="bg-blue-600 hover:bg-blue-500"
               variant="default"
             >
