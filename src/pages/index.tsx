@@ -36,7 +36,7 @@ export const Home = () => {
   }, []);
 
   return (
-    <main className="p-6 space-y-6 max-w-3xl mx-auto">
+    <main className="p-2 space-y-6 max-w-3xl mx-auto">
       <div className="mb-4 flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-slate-800">
@@ -55,7 +55,7 @@ export const Home = () => {
       <div className="flex flex-col md:flex-row gap-2">
         <Link to="/tips">
           <button className="px-4 py-2 bg-slate-800 text-white rounded hover:bg-slate-700 transition">
-            📝 自分のTips一覧を見る（編集、削除はここから）
+            📝 Tips一覧（編集、削除はここから）
           </button>
         </Link>
         <Link to="/post">
