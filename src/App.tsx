@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Home } from '@/pages/index';
+import { Home } from '@/pages/home';
 import { ReactPage } from '@/pages/react';
 import { SupabasePage } from '@/pages/supabase';
 import { PostTipPage } from '@/pages/post';

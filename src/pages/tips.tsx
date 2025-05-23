@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import { PageLayout } from '@/components/PageLayout';
 import type { Tip } from '@/types/tip';
@@ -15,6 +15,33 @@ export const TipsPage = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
+    null
+  );
+
+  // useEffect の外に定義して再利用できるようにする(認証エラーなどを省略)
+const fetchTips = useCallback(async () => {
+  if (!userId) return;
+  let query = supabase
+    .from('tips')
+    .select('*')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: sortOrder === 'asc' });
+
+  if (keyword.trim() !== '') {
+    query = query.ilike('title', `%${keyword}%`);
+  }
+  if (selectedCategoryId) {
+    query = query.eq('category_id', selectedCategoryId);
+  }
+
+  const { data, error } = await query;
+  if (error) {
+    console.error('🔴 tipsデータの取得に失敗:', error.message);
+    return;
+  }
+  setTips(data || []);
+}, [userId, keyword, sortOrder, selectedCategoryId]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -47,6 +74,9 @@ export const TipsPage = () => {
         if (keyword.trim() !== '') {
           query = query.ilike('title', `%${keyword}%`);
         }
+        if (selectedCategoryId) {
+          query = query.eq('category_id', selectedCategoryId);
+        }
         const { data, error } = await query;
         if (error) {
           console.error('🔴 tipsデータの取得に失敗:', error.message);
@@ -64,7 +94,7 @@ export const TipsPage = () => {
 
     fetchCategories();
     fetchTips();
-  }, [keyword, sortOrder]);
+  }, [keyword, sortOrder, selectedCategoryId]);
 
   const handleDelete = async (id: string) => {
     if (!userId) return;
@@ -83,6 +113,32 @@ export const TipsPage = () => {
 
   return (
     <PageLayout title="Tips一覧">
+      {/* 🔍 カテゴリフィルターバー */}
+      <div className="flex flex-wrap gap-2 mb-4">
+        <button
+          onClick={() => setSelectedCategoryId(null)}
+          className={`px-3 py-1 rounded border ${
+            selectedCategoryId === null
+              ? 'bg-blue-600 text-white'
+              : 'bg-white text-gray-700'
+          }`}
+        >
+          全て
+        </button>
+        {categories.map((cat) => (
+          <button
+            key={cat.id}
+            onClick={() => setSelectedCategoryId(cat.id)}
+            className={`px-3 py-1 rounded border ${
+              selectedCategoryId === cat.id
+                ? 'bg-blue-600 text-white'
+                : 'bg-white text-gray-700'
+            }`}
+          >
+            {cat.name}
+          </button>
+        ))}
+      </div>
       <TipFilterBar
         keyword={keyword}
         setKeyword={setKeyword}
@@ -110,14 +166,16 @@ export const TipsPage = () => {
                   .eq('id', tip.id)
                   .eq('user_id', userId);
                 if (!error) {
-                  setTips((prevTips) =>
-                    prevTips.map((t) =>
-                      t.id === tip.id
-                        ? { ...t, title, content, category_id: categoryId }
-                        : t
-                    )
-                  );
                   setEditingId(null);
+                  await fetchTips();
+                  // setTips((prevTips) =>
+                  //   prevTips.map((t) =>
+                  //     t.id === tip.id
+                  //       ? { ...t, title, content, category_id: categoryId }
+                  //       : t
+                  //   )
+                  // );
+                  // setEditingId(null);
                 }
               }}
             />
