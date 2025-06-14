@@ -8,7 +8,7 @@ DocShelf は、React・tailwindcss・Supabase などの Web 開発に関する�
 自分好みにUI/UXをカスタマイズできるツールが欲しかったことが背景にあります。
 
 ※ デプロイ先のリンクは以下になっています。
-## [docshelf-portfolio](docshelf-portfolio-faiwyztlt-namonakis-projects.vercel.app)
+## [docshelf-portfolio](https://docshelf-portfolio-faiwyztlt-namonakis-projects.vercel.app)
 
 
 
